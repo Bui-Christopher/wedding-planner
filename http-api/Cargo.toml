@@ -1,0 +1,17 @@
+[package]
+name = "http-api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+proto = { version = "0.1.0", path = "../proto/" }
+tonic = "0.8"
+
+poem = "1"
+poem-openapi = { version = "2", features = ["swagger-ui"]}
+tokio = { version = "1", features = ["full"] }
+
+env_logger = { version = "0.10" }
+log = { version = "0.4" }

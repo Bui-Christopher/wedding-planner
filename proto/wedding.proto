@@ -1,0 +1,31 @@
+syntax = "proto3";
+package wedding;
+
+message Guest {
+        string username = 1;
+        // Username and Phone Number to login
+        string phone_number = 2;
+        
+        string first_name = 3;
+        string last_name = 4;
+
+        string address = 5; 
+        string email = 6; 
+
+        string food_preferences = 7;
+        string song_requests = 8;
+    }
+
+message Goal {
+        string id = 1;
+        string name = 2;
+        int32 progress_amt = 3;
+        int32 total_amt = 4;
+        string image = 5;
+    }
+
+message Image {
+        string id = 1;
+        string name = 2;
+        bytes content = 3;
+    }

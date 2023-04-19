@@ -1,0 +1,7 @@
+[workspace]
+
+members = [
+    "http-api",
+    "grpc-db",
+    "proto",
+]
