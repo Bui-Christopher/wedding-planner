@@ -1,5 +1,6 @@
 #![deny(clippy::all)]
-#[macro_use] extern crate log;
+#[macro_use]
+extern crate log;
 
 mod api;
 
@@ -8,7 +9,6 @@ use poem_openapi::OpenApiService;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-
     env_logger::init();
 
     let api = api::Api::new();

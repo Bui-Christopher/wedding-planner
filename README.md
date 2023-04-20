@@ -12,8 +12,12 @@ This is the source of truth for both services.
 
 # TODOS
 There are several `todos` left to create a minimal viable product.
-- Dockerize
-    - Database (Cassandra/Redis?)
-    - Build Image Scripts for both binaries
-- Allow for optional fields
-- And more! :(
+- HTTP-API
+    - Docker Image
+    - Update Image handlers properly
+    - Send requests through gRPC
+- gRPC-DB
+    - Handle gRPC requests
+    - Write data to DB
+- DB
+    - Cassandra/Scylla

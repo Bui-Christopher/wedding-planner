@@ -10,6 +10,7 @@ tonic = "0.8"
 prost = "0.11"
 poem-openapi = "2"
 serde = "1"
+uuid = { version = "1.3", features = ["v4"] }
 
 [build-dependencies]
 tonic-build = "0.8"
