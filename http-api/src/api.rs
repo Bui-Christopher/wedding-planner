@@ -1,9 +1,10 @@
 use poem_openapi::{
     param::{Path, Query},
-    payload::{Json, PlainText},
+    payload::{Binary, Json, PlainText},
     OpenApi,
 };
 use proto::wedding::{Goal, Guest, Image};
+use uuid::Uuid;
 
 pub struct Api {}
 
@@ -28,13 +29,13 @@ impl Api {
     #[oai(path = "/guests", method = "post")]
     async fn create_guest(&self, guest: Json<Guest>) -> Json<String> {
         let id = &guest.id;
-        debug!("Creating guest: {id}.");
-        Json("Creatin guest...".to_string())
+        debug!("Creating guest: {}.", id.clone());
+        Json("Creating guest...".to_string())
     }
 
     #[oai(path = "/guests/:id", method = "get")]
-    async fn read_guest(&self, id: Path<String>) -> Json<Guest> {
-        let id = id.0;
+    async fn read_guest(&self, id: Path<Uuid>) -> Json<Guest> {
+        let id = id.0.to_string();
         debug!("Reading registered guest: {id}.");
         Json(Guest::default())
     }
@@ -46,15 +47,15 @@ impl Api {
     }
 
     #[oai(path = "/guests/:id", method = "patch")]
-    async fn update_guest(&self, id: Path<String>) -> Json<String> {
-        let id = id.0;
+    async fn update_guest(&self, id: Path<Uuid>) -> Json<String> {
+        let id = id.0.to_string();
         debug!("Updating guest: {id}.");
         Json("Updating guest...".to_string())
     }
 
     #[oai(path = "/guests/:id", method = "delete")]
-    async fn delete_guest(&self, id: Path<String>) -> Json<String> {
-        let id = id.0;
+    async fn delete_guest(&self, id: Path<Uuid>) -> Json<String> {
+        let id = id.0.to_string();
         debug!("Deleting guest: {id}.");
         Json("Deleting guest...".to_string())
     }
@@ -68,8 +69,8 @@ impl Api {
     }
 
     #[oai(path = "/goals/:id", method = "get")]
-    async fn read_goal(&self, id: Path<String>) -> Json<Goal> {
-        let id = id.0;
+    async fn read_goal(&self, id: Path<Uuid>) -> Json<Goal> {
+        let id = id.0.to_string();
         debug!("Reading specific goal: {id}.");
         Json(Goal::default())
     }
@@ -81,15 +82,15 @@ impl Api {
     }
 
     #[oai(path = "/goals/:id", method = "patch")]
-    async fn update_goal(&self, id: Path<String>) -> Json<String> {
-        let id = id.0;
+    async fn update_goal(&self, id: Path<Uuid>) -> Json<String> {
+        let id = id.0.to_string();
         debug!("Updating goal: {id}.");
         Json("Updating goal...".to_string())
     }
 
     #[oai(path = "/goals/:id", method = "delete")]
-    async fn delete_goal(&self, id: Path<String>) -> Json<String> {
-        let id = id.0;
+    async fn delete_goal(&self, id: Path<Uuid>) -> Json<String> {
+        let id = id.0.to_string();
         debug!("Deleting goal: {id}.");
         Json("Deleting goal...".to_string())
     }
@@ -97,23 +98,23 @@ impl Api {
     // API for Images
     // TODO: Submit binary
     #[oai(path = "/images", method = "post")]
-    async fn create_image(&self, image: Json<Image>) -> Json<String> {
-        let id = &image.id;
-        debug!("Creating image: {id}.");
+    async fn create_image(&self, content: Binary<Vec<u8>>) -> Json<String> {
+        let _content = content.0; 
+        debug!("Creating image...");
         Json("Creating image...".to_string())
     }
 
     // TODO: Return Bunary
     #[oai(path = "/images/:id", method = "get")]
-    async fn read_image(&self, id: Path<String>) -> Json<Image> {
-        let id = id.0;
+    async fn read_image(&self, id: Path<Uuid>) -> Json<Image> {
+        let id = id.0.to_string();
         debug!("Reading specific image: {id}.");
         Json(Image::default())
     }
 
     #[oai(path = "/images/:id", method = "delete")]
-    async fn delete_image(&self, id: Path<String>) -> Json<String> {
-        let id = id.0;
+    async fn delete_image(&self, id: Path<Uuid>) -> Json<String> {
+        let id = id.0.to_string();
         debug!("Deleting image: {id}.");
         Json("Deleting image...".to_string())
     }
