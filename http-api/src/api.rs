@@ -17,7 +17,7 @@ impl Api {
 #[OpenApi]
 impl Api {
     #[oai(path = "/hello", method = "get")]
-    async fn index(&self, name: Query<Option<String>>) -> PlainText<String> {
+    async fn hello(&self, name: Query<Option<String>>) -> PlainText<String> {
         debug!("Hello World!");
         match name.0 {
             Some(name) => PlainText(format!("hello, {name}!")),
@@ -30,7 +30,7 @@ impl Api {
     async fn create_guest(&self, guest: Json<Guest>) -> Json<String> {
         let id = &guest.id;
         debug!("Creating guest: {}.", id.clone());
-        Json("Creating guest...".to_string())
+        Json(guest.id.clone())
     }
 
     #[oai(path = "/guests/:id", method = "get")]
@@ -96,7 +96,6 @@ impl Api {
     }
 
     // API for Images
-    // TODO: Submit binary
     #[oai(path = "/images", method = "post")]
     async fn create_image(&self, content: Binary<Vec<u8>>) -> Json<String> {
         let _content = content.0; 
@@ -104,12 +103,11 @@ impl Api {
         Json("Creating image...".to_string())
     }
 
-    // TODO: Return Bunary
     #[oai(path = "/images/:id", method = "get")]
-    async fn read_image(&self, id: Path<Uuid>) -> Json<Image> {
+    async fn read_image(&self, id: Path<Uuid>) -> Binary<Vec<u8>> {
         let id = id.0.to_string();
         debug!("Reading specific image: {id}.");
-        Json(Image::default())
+        Binary(Image::default().content)
     }
 
     #[oai(path = "/images/:id", method = "delete")]
