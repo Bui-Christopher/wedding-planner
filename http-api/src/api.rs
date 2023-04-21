@@ -1,18 +1,20 @@
-use crate::responses::{JsonResponse, BinaryResponse};
+use crate::{responses::{JsonResponse, BinaryResponse}, guests::*};
 
-use poem_openapi::{
-    param::{Path, Query},
+use poem_openapi::{ param::{Path, Query},
     payload::{Binary, Json, PlainText},
     OpenApi,
 };
 use proto::wedding::{Goal, Guest, Image};
+use tonic::transport::Channel;
 use uuid::Uuid;
 
-pub struct Api {}
+pub struct Api {
+    grpc_channel: Channel,
+}
 
 impl Api {
-    pub fn new() -> Self {
-        Api {}
+    pub fn new(channel: Channel) -> Self {
+        Api { grpc_channel: channel }
     }
 }
 
@@ -32,37 +34,49 @@ impl Api {
     async fn create_guest(&self, guest: Json<Guest>) -> JsonResponse<Uuid> {
         let guest = guest.0;
         debug!("Creating guest: {:?}.", guest);
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match create_guest(guest, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/guests/:id", method = "get")]
     async fn read_guest(&self, id: Path<Uuid>) -> JsonResponse<Guest> {
         let id = id.0.to_string();
         debug!("Reading registered guest: {id}.");
-        JsonResponse::ok(Guest::default())
+        match read_guest(id, self.grpc_channel.clone()).await {
+            Ok(guest) => JsonResponse::ok(guest),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/guests", method = "get")]
     async fn read_guests(&self) -> JsonResponse<Vec<Guest>> {
         debug!("Reading all registered guests...");
-        JsonResponse::ok(vec![])
+        match read_multi_guests(self.grpc_channel.clone()).await {
+            Ok(guests) => JsonResponse::ok(guests),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/guests/", method = "patch")]
     async fn update_guest(&self, guest: Json<Guest>) -> JsonResponse<Uuid> {
         let guest = guest.0;
         debug!("Updating guest: {:?}.", guest);
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match update_guest(guest, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/guests/:id", method = "delete")]
     async fn delete_guest(&self, id: Path<Uuid>) -> JsonResponse<Uuid> {
         let id = id.0.to_string();
         debug!("Deleting guest: {id}.");
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match delete_guest(id, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     // API for Goals
