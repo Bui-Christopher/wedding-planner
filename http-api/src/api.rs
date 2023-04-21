@@ -1,3 +1,5 @@
+use crate::responses::{JsonResponse, BinaryResponse};
+
 use poem_openapi::{
     param::{Path, Query},
     payload::{Binary, Json, PlainText},
@@ -27,93 +29,93 @@ impl Api {
 
     // API for Guests
     #[oai(path = "/guests", method = "post")]
-    async fn create_guest(&self, guest: Json<Guest>) -> Json<String> {
+    async fn create_guest(&self, guest: Json<Guest>) -> JsonResponse<String> {
         let guest = guest.0;
         debug!("Creating guest: {:?}.", guest);
-        Json(guest.id)
+        JsonResponse::ok(guest.id)
     }
 
     #[oai(path = "/guests/:id", method = "get")]
-    async fn read_guest(&self, id: Path<Uuid>) -> Json<Guest> {
+    async fn read_guest(&self, id: Path<Uuid>) -> JsonResponse<Guest> {
         let id = id.0.to_string();
         debug!("Reading registered guest: {id}.");
-        Json(Guest::default())
+        JsonResponse::ok(Guest::default())
     }
 
     #[oai(path = "/guests", method = "get")]
-    async fn read_guests(&self) -> Json<Vec<Guest>> {
+    async fn read_guests(&self) -> JsonResponse<Vec<Guest>> {
         debug!("Reading all registered guests...");
-        Json(vec![])
+        JsonResponse::ok(vec![])
     }
 
     #[oai(path = "/guests/", method = "patch")]
-    async fn update_guest(&self, guest: Json<Guest>) -> Json<String> {
-        let guest = guest.0; 
+    async fn update_guest(&self, guest: Json<Guest>) -> JsonResponse<String> {
+        let guest = guest.0;
         debug!("Updating guest: {:?}.", guest);
-        Json(guest.id)
+        JsonResponse::ok(guest.id)
     }
 
     #[oai(path = "/guests/:id", method = "delete")]
-    async fn delete_guest(&self, id: Path<Uuid>) -> Json<String> {
+    async fn delete_guest(&self, id: Path<Uuid>) -> JsonResponse<String> {
         let id = id.0.to_string();
         debug!("Deleting guest: {id}.");
-        Json(id)
+        JsonResponse::ok(id)
     }
 
     // API for Goals
     #[oai(path = "/goals", method = "post")]
-    async fn create_goal(&self, goal: Json<Goal>) -> Json<String> {
+    async fn create_goal(&self, goal: Json<Goal>) -> JsonResponse<String> {
         let goal = goal.0;
         debug!("Creating goal: {:?}.", goal);
-        Json(goal.id)
+        JsonResponse::ok(goal.id)
     }
 
     #[oai(path = "/goals/:id", method = "get")]
-    async fn read_goal(&self, id: Path<Uuid>) -> Json<Goal> {
+    async fn read_goal(&self, id: Path<Uuid>) -> JsonResponse<Goal> {
         let id = id.0.to_string();
         debug!("Reading specific goal: {id}.");
-        Json(Goal::default())
+        JsonResponse::ok(Goal::default())
     }
 
     #[oai(path = "/goals", method = "get")]
-    async fn read_goals(&self) -> Json<Vec<Goal>> {
+    async fn read_goals(&self) -> JsonResponse<Vec<Goal>> {
         debug!("Reading all goals...");
-        Json(vec![])
+        JsonResponse::ok(vec![])
     }
 
     #[oai(path = "/goals", method = "patch")]
-    async fn update_goal(&self, goal: Json<Goal>) -> Json<String> {
+    async fn update_goal(&self, goal: Json<Goal>) -> JsonResponse<String> {
         let goal = goal.0;
         debug!("Updating goal: {:?}.", goal);
-        Json(goal.id)
+        JsonResponse::ok(goal.id)
     }
 
     #[oai(path = "/goals/:id", method = "delete")]
-    async fn delete_goal(&self, id: Path<Uuid>) -> Json<String> {
+    async fn delete_goal(&self, id: Path<Uuid>) -> JsonResponse<String> {
         let id = id.0.to_string();
         debug!("Deleting goal: {id}.");
-        Json(id)
+        JsonResponse::ok(id)
     }
 
     // API for Images
     #[oai(path = "/images", method = "post")]
-    async fn create_image(&self, content: Binary<Vec<u8>>) -> Json<String> {
-        let _content = content.0; 
+    async fn create_image(&self, content: Binary<Vec<u8>>) -> JsonResponse<String> {
+        let _content = content.0;
         debug!("Creating image...");
-        Json(Uuid::new_v4().to_string())
+        JsonResponse::ok(Uuid::new_v4().to_string())
     }
 
     #[oai(path = "/images/:id", method = "get")]
-    async fn read_image(&self, id: Path<Uuid>) -> Binary<Vec<u8>> {
+    async fn read_image(&self, id: Path<Uuid>) -> BinaryResponse {
         let id = id.0.to_string();
         debug!("Reading specific image: {id}.");
-        Binary(Image::default().content)
+        BinaryResponse::ok(Binary(Image::default().content))
     }
 
     #[oai(path = "/images/:id", method = "delete")]
-    async fn delete_image(&self, id: Path<Uuid>) -> Json<String> {
+    async fn delete_image(&self, id: Path<Uuid>) -> JsonResponse<String> {
         let id = id.0.to_string();
         debug!("Deleting image: {id}.");
-        Json(id)
+        JsonResponse::ok(id)
     }
 }

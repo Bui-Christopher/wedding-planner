@@ -6,6 +6,7 @@ mod api;
 mod goals;
 mod guests;
 mod images;
+mod responses;
 
 use poem::{listener::TcpListener, Route};
 use poem_openapi::OpenApiService;
@@ -16,7 +17,7 @@ async fn main() -> Result<(), std::io::Error> {
 
     let api = api::Api::new();
     let api_service =
-        OpenApiService::new(api, "Wedding API", "1.0").server("http://localhost:8080/api/v1");
+        OpenApiService::new(api, "RSVP/Registry API", "1.0").server("http://localhost:8080/api/v1");
 
     let ui = api_service.swagger_ui();
     let app = Route::new().nest("/api/v1", api_service).nest("/", ui);
