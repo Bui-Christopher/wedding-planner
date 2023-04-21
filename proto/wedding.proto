@@ -16,7 +16,7 @@ message Guest {
 
         string food_preferences = 8;
         string song_requests = 9;
-    }
+}
 
 message Goal {
         string id = 1;
@@ -24,134 +24,9 @@ message Goal {
         int32 progress_amt = 3;
         int32 total_amt = 4;
         string image = 5;
-    }
+}
 
 message Image {
         string id = 1;
         bytes content = 2;
-    }
-
-// CRUD Operations
-service GuestRequests {
-    rpc CreateGuest (CreateGuestRequest) returns (CreateGuestResponse);
-    rpc ReadGuest (ReadGuestRequest) returns (ReadGuestResponse);
-    rpc ReadMultiGuests (ReadMultiGuestsRequest) returns (ReadMultiGuestsResponse);
-    rpc UpdateGuest (UpdateGuestRequest) returns (UpdateGuestResponse);
-    rpc DeleteGuest (DeleteGuestRequest) returns (DeleteGuestResponse);
-}
-
-message CreateGuestRequest {
-    Guest guest = 1;
-}
-
-message CreateGuestResponse {
-    string id = 1;
-}
-
-message ReadGuestRequest {
-    string id = 1;
-}
-
-message ReadGuestResponse {
-    Guest guest = 1;
-}
-
-message ReadMultiGuestsRequest {
-}
-
-message ReadMultiGuestsResponse {
-    repeated Guest guests = 1;
-}
-
-message UpdateGuestRequest {
-    Guest guest = 1;
-}
-
-message UpdateGuestResponse {
-    string id = 1;
-}
-
-message DeleteGuestRequest {
-    string id = 1;
-}
-
-message DeleteGuestResponse {
-    string id = 1;
-}
-
-service GoalRequests {
-    rpc CreateGoal (CreateGoalRequest) returns (CreateGoalResponse);
-    rpc ReadGoal (ReadGoalRequest) returns (ReadGoalResponse);
-    rpc ReadMultiGoals (ReadMultiGoalsRequest) returns (ReadMultiGoalsResponse);
-    rpc UpdateGoal (UpdateGoalRequest) returns (UpdateGoalResponse);
-    rpc DeleteGoal (DeleteGoalRequest) returns (DeleteGoalResponse);
-}
-
-message CreateGoalRequest {
-    Goal Goal = 1;
-}
-
-message CreateGoalResponse {
-    string id = 1;
-}
-
-message ReadGoalRequest {
-    string id = 1;
-}
-
-message ReadGoalResponse {
-    Goal Goal = 1;
-}
-
-message ReadMultiGoalsRequest {
-}
-
-message ReadMultiGoalsResponse {
-    repeated Goal Goals = 1;
-}
-
-message UpdateGoalRequest {
-    Goal Goal = 1;
-}
-
-message UpdateGoalResponse {
-    string id = 1;
-}
-
-message DeleteGoalRequest {
-    string id = 1;
-}
-
-message DeleteGoalResponse {
-    string id = 1;
-}
-
-service ImageRequests {
-    rpc CreateImage (CreateImageRequest) returns (CreateImageResponse);
-    rpc ReadImage (ReadImageRequest) returns (ReadImageResponse);
-    rpc DeleteImage (DeleteImageRequest) returns (DeleteImageResponse);
-}
-
-message CreateImageRequest {
-    Image Image = 1;
-}
-
-message CreateImageResponse {
-    string id = 1;
-}
-
-message ReadImageRequest {
-    string id = 1;
-}
-
-message ReadImageResponse {
-    Image Image = 1;
-}
-
-message DeleteImageRequest {
-    string id = 1;
-}
-
-message DeleteImageResponse {
-    string id = 1;
 }

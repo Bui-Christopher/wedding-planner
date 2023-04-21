@@ -36,6 +36,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "wedding.Image.id",
             "#[oai(default = \"crate::common::get_new_uuid\")]",
         )
-        .compile(&["wedding.proto"], &["."])?;
+        .compile(&["service.proto", "wedding.proto"], &["."])?;
     Ok(())
 }

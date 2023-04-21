@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+import "wedding.proto";
+
+package service;
+
+
+// CRUD Operations
+service Guests {
+    rpc CreateGuest (CreateGuestRequest) returns (CreateGuestResponse);
+    rpc ReadGuest (ReadGuestRequest) returns (ReadGuestResponse);
+    rpc ReadMultiGuests (ReadMultiGuestsRequest) returns (ReadMultiGuestsResponse);
+    rpc UpdateGuest (UpdateGuestRequest) returns (UpdateGuestResponse);
+    rpc DeleteGuest (DeleteGuestRequest) returns (DeleteGuestResponse);
+}
+
+message CreateGuestRequest {
+    wedding.Guest guest = 1;
+}
+
+message CreateGuestResponse {
+    string id = 1;
+}
+
+message ReadGuestRequest {
+    string id = 1;
+}
+
+message ReadGuestResponse {
+    wedding.Guest guest = 1;
+}
+
+message ReadMultiGuestsRequest {
+}
+
+message ReadMultiGuestsResponse {
+    repeated wedding.Guest guests = 1;
+}
+
+message UpdateGuestRequest {
+    wedding.Guest guest = 1;
+}
+
+message UpdateGuestResponse {
+    string id = 1;
+}
+
+message DeleteGuestRequest {
+    string id = 1;
+}
+
+message DeleteGuestResponse {
+    string id = 1;
+}
+
+service Goals {
+    rpc CreateGoal (CreateGoalRequest) returns (CreateGoalResponse);
+    rpc ReadGoal (ReadGoalRequest) returns (ReadGoalResponse);
+    rpc ReadMultiGoals (ReadMultiGoalsRequest) returns (ReadMultiGoalsResponse);
+    rpc UpdateGoal (UpdateGoalRequest) returns (UpdateGoalResponse);
+    rpc DeleteGoal (DeleteGoalRequest) returns (DeleteGoalResponse);
+}
+
+message CreateGoalRequest {
+    wedding.Goal Goal = 1;
+}
+
+message CreateGoalResponse {
+    string id = 1;
+}
+
+message ReadGoalRequest {
+    string id = 1;
+}
+
+message ReadGoalResponse {
+    wedding.Goal Goal = 1;
+}
+
+message ReadMultiGoalsRequest {
+}
+
+message ReadMultiGoalsResponse {
+    repeated wedding.Goal Goals = 1;
+}
+
+message UpdateGoalRequest {
+    wedding.Goal Goal = 1;
+}
+
+message UpdateGoalResponse {
+    string id = 1;
+}
+
+message DeleteGoalRequest {
+    string id = 1;
+}
+
+message DeleteGoalResponse {
+    string id = 1;
+}
+
+service Images {
+    rpc CreateImage (CreateImageRequest) returns (CreateImageResponse);
+    rpc ReadImage (ReadImageRequest) returns (ReadImageResponse);
+    rpc DeleteImage (DeleteImageRequest) returns (DeleteImageResponse);
+}
+
+message CreateImageRequest {
+    wedding.Image Image = 1;
+}
+
+message CreateImageResponse {
+    string id = 1;
+}
+
+message ReadImageRequest {
+    string id = 1;
+}
+
+message ReadImageResponse {
+    wedding.Image Image = 1;
+}
+
+message DeleteImageRequest {
+    string id = 1;
+}
+
+message DeleteImageResponse {
+    string id = 1;
+}
