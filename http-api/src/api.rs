@@ -29,10 +29,11 @@ impl Api {
 
     // API for Guests
     #[oai(path = "/guests", method = "post")]
-    async fn create_guest(&self, guest: Json<Guest>) -> JsonResponse<String> {
+    async fn create_guest(&self, guest: Json<Guest>) -> JsonResponse<Uuid> {
         let guest = guest.0;
         debug!("Creating guest: {:?}.", guest);
-        JsonResponse::ok(guest.id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     #[oai(path = "/guests/:id", method = "get")]
@@ -49,25 +50,28 @@ impl Api {
     }
 
     #[oai(path = "/guests/", method = "patch")]
-    async fn update_guest(&self, guest: Json<Guest>) -> JsonResponse<String> {
+    async fn update_guest(&self, guest: Json<Guest>) -> JsonResponse<Uuid> {
         let guest = guest.0;
         debug!("Updating guest: {:?}.", guest);
-        JsonResponse::ok(guest.id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     #[oai(path = "/guests/:id", method = "delete")]
-    async fn delete_guest(&self, id: Path<Uuid>) -> JsonResponse<String> {
+    async fn delete_guest(&self, id: Path<Uuid>) -> JsonResponse<Uuid> {
         let id = id.0.to_string();
         debug!("Deleting guest: {id}.");
-        JsonResponse::ok(id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     // API for Goals
     #[oai(path = "/goals", method = "post")]
-    async fn create_goal(&self, goal: Json<Goal>) -> JsonResponse<String> {
+    async fn create_goal(&self, goal: Json<Goal>) -> JsonResponse<Uuid> {
         let goal = goal.0;
         debug!("Creating goal: {:?}.", goal);
-        JsonResponse::ok(goal.id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     #[oai(path = "/goals/:id", method = "get")]
@@ -84,25 +88,28 @@ impl Api {
     }
 
     #[oai(path = "/goals", method = "patch")]
-    async fn update_goal(&self, goal: Json<Goal>) -> JsonResponse<String> {
+    async fn update_goal(&self, goal: Json<Goal>) -> JsonResponse<Uuid> {
         let goal = goal.0;
         debug!("Updating goal: {:?}.", goal);
-        JsonResponse::ok(goal.id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     #[oai(path = "/goals/:id", method = "delete")]
-    async fn delete_goal(&self, id: Path<Uuid>) -> JsonResponse<String> {
+    async fn delete_goal(&self, id: Path<Uuid>) -> JsonResponse<Uuid> {
         let id = id.0.to_string();
         debug!("Deleting goal: {id}.");
-        JsonResponse::ok(id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     // API for Images
     #[oai(path = "/images", method = "post")]
-    async fn create_image(&self, content: Binary<Vec<u8>>) -> JsonResponse<String> {
+    async fn create_image(&self, content: Binary<Vec<u8>>) -> JsonResponse<Uuid> {
         let _content = content.0;
         debug!("Creating image...");
-        JsonResponse::ok(Uuid::new_v4().to_string())
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 
     #[oai(path = "/images/:id", method = "get")]
@@ -113,9 +120,10 @@ impl Api {
     }
 
     #[oai(path = "/images/:id", method = "delete")]
-    async fn delete_image(&self, id: Path<Uuid>) -> JsonResponse<String> {
+    async fn delete_image(&self, id: Path<Uuid>) -> JsonResponse<Uuid> {
         let id = id.0.to_string();
         debug!("Deleting image: {id}.");
-        JsonResponse::ok(id)
+        let uuid = Uuid::new_v4();
+        JsonResponse::ok(uuid)
     }
 }
