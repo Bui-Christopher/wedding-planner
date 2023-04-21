@@ -3,6 +3,9 @@
 extern crate log;
 
 mod api;
+mod goals;
+mod guests;
+mod images;
 
 use poem::{listener::TcpListener, Route};
 use poem_openapi::OpenApiService;
