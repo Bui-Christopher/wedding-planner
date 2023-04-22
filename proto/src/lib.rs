@@ -2,10 +2,10 @@
 
 pub mod common;
 
-pub mod wedding {
-    tonic::include_proto!("wedding");
+pub mod objects {
+    tonic::include_proto!("objects");
 }
 
-pub mod service {
-    tonic::include_proto!("service");
+pub mod methods {
+    tonic::include_proto!("methods");
 }

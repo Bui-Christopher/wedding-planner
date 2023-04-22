@@ -1,5 +1,5 @@
 syntax = "proto3";
-package wedding;
+package objects;
 
 message Guest {
         string id = 1;

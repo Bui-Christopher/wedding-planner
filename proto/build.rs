@@ -1,41 +1,41 @@
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tonic_build::configure()
         .type_attribute(
-            "wedding.Guest",
+            "objects.Guest",
             "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize)]",
         )
         .type_attribute(
-            "wedding.Goal",
+            "objects.Goal",
             "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize)]",
         )
         .type_attribute(
-            "wedding.Image",
+            "objects.Image",
             "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize)]",
         )
         .field_attribute(
-            "wedding.Guest.id",
+            "objects.Guest.id",
             "#[oai(default = \"crate::common::get_new_uuid\")]",
         )
         .field_attribute(
-            "wedding.Guest.food_preferences",
+            "objects.Guest.food_preferences",
             "#[oai(default = \"String::new\")]",
         )
         .field_attribute(
-            "wedding.Guest.song_requests",
+            "objects.Guest.song_requests",
             "#[oai(default = \"String::new\")]",
         )
         .field_attribute(
-            "wedding.Goal.id",
+            "objects.Goal.id",
             "#[oai(default = \"crate::common::get_new_uuid\")]",
         )
         .field_attribute(
-            "wedding.Goal.progress_amt",
+            "objects.Goal.progress_amt",
             "#[oai(default = \"i32::default\")]",
         )
         .field_attribute(
-            "wedding.Image.id",
+            "objects.Image.id",
             "#[oai(default = \"crate::common::get_new_uuid\")]",
         )
-        .compile(&["service.proto", "wedding.proto"], &["."])?;
+        .compile(&["methods.proto", "objects.proto"], &["."])?;
     Ok(())
 }
