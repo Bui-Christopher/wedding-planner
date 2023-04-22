@@ -1,6 +1,6 @@
 use proto::{
-    service::{guests_client::GuestsClient, *},
-    wedding::Guest,
+    methods::{guests_client::GuestsClient, *},
+    objects::Guest,
 };
 use tonic::{transport::Channel, Request};
 use uuid::Uuid;

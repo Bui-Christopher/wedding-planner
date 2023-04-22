@@ -1,14 +1,15 @@
 use proto::{
-    service::{goals_client::GoalsClient, *},
-    wedding::Goal,
+    methods::{goals_client::GoalsClient, *},
+    objects::Goal,
 };
 use tonic::{transport::Channel, Request};
 use uuid::Uuid;
 
 pub async fn create_goal(
     goal: Goal,
-    client: &mut GoalsClient<Channel>,
+    channel: Channel,
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
+    let mut client = GoalsClient::new(channel);
     let req = Request::new(CreateGoalRequest { goal: Some(goal) });
 
     let resp = client.create_goal(req).await?;
@@ -22,8 +23,9 @@ pub async fn create_goal(
 
 pub async fn read_goal(
     id: String,
-    client: &mut GoalsClient<Channel>,
+    channel: Channel,
 ) -> Result<Goal, Box<dyn std::error::Error>> {
+    let mut client = GoalsClient::new(channel);
     let req = Request::new(ReadGoalRequest { id });
 
     let resp = client.read_goal(req).await?;
@@ -38,8 +40,9 @@ pub async fn read_goal(
 }
 
 pub async fn read_multi_goals(
-    client: &mut GoalsClient<Channel>,
+    channel: Channel,
 ) -> Result<Vec<Goal>, Box<dyn std::error::Error>> {
+    let mut client = GoalsClient::new(channel);
     let req = Request::new(ReadMultiGoalsRequest {});
 
     let resp = client.read_multi_goals(req).await?;
@@ -50,8 +53,9 @@ pub async fn read_multi_goals(
 
 pub async fn update_goal(
     goal: Goal,
-    client: &mut GoalsClient<Channel>,
+    channel: Channel,
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
+    let mut client = GoalsClient::new(channel);
     let req = Request::new(UpdateGoalRequest { goal: Some(goal) });
 
     let resp = client.update_goal(req).await?;
@@ -65,8 +69,9 @@ pub async fn update_goal(
 
 pub async fn delete_goal(
     id: String,
-    client: &mut GoalsClient<Channel>,
+    channel: Channel,
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
+    let mut client = GoalsClient::new(channel);
     let req = Request::new(DeleteGoalRequest { id });
 
     let resp = client.delete_goal(req).await?;

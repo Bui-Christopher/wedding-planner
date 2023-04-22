@@ -1,14 +1,15 @@
 use proto::{
-    service::{images_client::ImagesClient, *},
-    wedding::Image,
+    methods::{images_client::ImagesClient, *},
+    objects::Image,
 };
 use tonic::{transport::Channel, Request};
 use uuid::Uuid;
 
 pub async fn create_image(
     image: Image,
-    client: &mut ImagesClient<Channel>,
+    channel: Channel,
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
+    let mut client = ImagesClient::new(channel);
     let req = Request::new(CreateImageRequest { image: Some(image) });
 
     let resp = client.create_image(req).await?;
@@ -22,8 +23,9 @@ pub async fn create_image(
 
 pub async fn read_image(
     id: String,
-    client: &mut ImagesClient<Channel>,
+    channel: Channel,
 ) -> Result<Image, Box<dyn std::error::Error>> {
+    let mut client = ImagesClient::new(channel);
     let req = Request::new(ReadImageRequest { id });
 
     let resp = client.read_image(req).await?;
@@ -39,8 +41,9 @@ pub async fn read_image(
 
 pub async fn delete_image(
     id: String,
-    client: &mut ImagesClient<Channel>,
+    channel: Channel,
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
+    let mut client = ImagesClient::new(channel);
     let req = Request::new(DeleteImageRequest { id });
 
     let resp = client.delete_image(req).await?;

@@ -1,10 +1,16 @@
-use crate::{responses::{JsonResponse, BinaryResponse}, guests::*};
+use crate::{
+    goals::*,
+    guests::*,
+    images::*,
+    responses::{BinaryResponse, JsonResponse},
+};
 
-use poem_openapi::{ param::{Path, Query},
+use poem_openapi::{
+    param::{Path, Query},
     payload::{Binary, Json, PlainText},
     OpenApi,
 };
-use proto::wedding::{Goal, Guest, Image};
+use proto::objects::{Goal, Guest, Image};
 use tonic::transport::Channel;
 use uuid::Uuid;
 
@@ -14,7 +20,9 @@ pub struct Api {
 
 impl Api {
     pub fn new(channel: Channel) -> Self {
-        Api { grpc_channel: channel }
+        Api {
+            grpc_channel: channel,
+        }
     }
 }
 
@@ -84,60 +92,83 @@ impl Api {
     async fn create_goal(&self, goal: Json<Goal>) -> JsonResponse<Uuid> {
         let goal = goal.0;
         debug!("Creating goal: {:?}.", goal);
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match create_goal(goal, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/goals/:id", method = "get")]
     async fn read_goal(&self, id: Path<Uuid>) -> JsonResponse<Goal> {
         let id = id.0.to_string();
         debug!("Reading specific goal: {id}.");
-        JsonResponse::ok(Goal::default())
+        match read_goal(id, self.grpc_channel.clone()).await {
+            Ok(goal) => JsonResponse::ok(goal),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/goals", method = "get")]
     async fn read_goals(&self) -> JsonResponse<Vec<Goal>> {
         debug!("Reading all goals...");
-        JsonResponse::ok(vec![])
+        match read_multi_goals(self.grpc_channel.clone()).await {
+            Ok(goals) => JsonResponse::ok(goals),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/goals", method = "patch")]
     async fn update_goal(&self, goal: Json<Goal>) -> JsonResponse<Uuid> {
         let goal = goal.0;
         debug!("Updating goal: {:?}.", goal);
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match update_goal(goal, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/goals/:id", method = "delete")]
     async fn delete_goal(&self, id: Path<Uuid>) -> JsonResponse<Uuid> {
         let id = id.0.to_string();
         debug!("Deleting goal: {id}.");
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match delete_goal(id, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     // API for Images
     #[oai(path = "/images", method = "post")]
     async fn create_image(&self, content: Binary<Vec<u8>>) -> JsonResponse<Uuid> {
-        let _content = content.0;
+        let content = content.0;
         debug!("Creating image...");
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        let image = Image { content, ..Default::default()};
+        match create_image(image, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/images/:id", method = "get")]
     async fn read_image(&self, id: Path<Uuid>) -> BinaryResponse {
         let id = id.0.to_string();
         debug!("Reading specific image: {id}.");
-        BinaryResponse::ok(Binary(Image::default().content))
+        match read_image(id, self.grpc_channel.clone()).await {
+            Ok(image) => {
+                let content = image.content;
+                BinaryResponse::ok(Binary(content))
+            }
+            Err(error) => BinaryResponse::internal_error(error.to_string()),
+        }
     }
 
     #[oai(path = "/images/:id", method = "delete")]
     async fn delete_image(&self, id: Path<Uuid>) -> JsonResponse<Uuid> {
         let id = id.0.to_string();
         debug!("Deleting image: {id}.");
-        let uuid = Uuid::new_v4();
-        JsonResponse::ok(uuid)
+        match delete_image(id, self.grpc_channel.clone()).await {
+            Ok(uuid) => JsonResponse::ok(uuid),
+            Err(error) => JsonResponse::internal_error(error.to_string()),
+        }
     }
 }
