@@ -22,13 +22,12 @@ lazy_static! {
 async fn main() -> Result<(), std::io::Error> {
     env_logger::init();
     let channel = tonic::transport::Channel::from_static(&MIDDLEWARE_URI).connect_lazy();
-
     let api = api::Api::new(channel);
     let api_service =
-        OpenApiService::new(api, "RSVP/Registry API", "1.0").server(format!("{}/api/v1", *API_URI));
+        OpenApiService::new(api, "RSVP/Registry API", "1.0");
 
     let ui = api_service.swagger_ui();
-    let app = Route::new().nest("/api/v1", api_service).nest("/", ui);
+    let app = Route::new().nest("/api/v1/", api_service).nest("/api/v1/doc", ui);
 
     info!("Starting http server");
     poem::Server::new(TcpListener::bind(API_URI.to_string()))
