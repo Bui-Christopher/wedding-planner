@@ -1,23 +1,27 @@
 # Wedding RSVP-Registry
-A simple backend service for a Wedding RSVP and Registry. It implements an http-api-server and a grpc-db-server.
+A simple backend service for a Wedding RSVP and Registry. It is implemented with an http-api-gw, 
+grpc-middleware, scylla-db, and a nginx proxy.
 
 ## HTTP-API
 The HTTP API server utilizes the `poem-api crate`, thus, it creates its own swagger docs.
 
 ## gRPC-DB
-This server is the bridge between frontend HTTP and backend DB.
+The grpc middleware is the bridge between frontend HTTP and backend DB.
 
 ## PROTO
-This is the source of truth for both services.
+This is the library crate which defines the objects/methods that are passed between services.
 
 # TODOS
-There are several `todos` left to create a minimal viable product.
+There are several `todos` left to complete this demo project. 
 - HTTP-API
-    - Docker Image
-    - Update Image handlers properly
-    - Send requests through gRPC
+    - Dockerize
 - gRPC-DB
-    - Handle gRPC requests
+    - Dockerize
     - Write data to DB
 - DB
     - Cassandra/Scylla
+- NGINX
+    - Set up reverse proxy
+Documentation
+    - Improvements
+    - Setup/Quickstart
