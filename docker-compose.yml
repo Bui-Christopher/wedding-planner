@@ -19,14 +19,19 @@ services:
       - backend-net
     ports:
       - 8080:8080
-  #
-  # grpc-db:
-  #   image: grpc-db:latest
-  #   container_name: grpc-db 
-  #   hostname: grpc-db 
-  #   networks:
-  #     - backend-net
-  #   restart: always
+    environment: &http_env
+      - MIDDLEWARE_URI=http://grpc-db:8081
+
+  grpc-db:
+    image: grpc-db:latest
+    container_name: grpc-db 
+    hostname: grpc-db 
+    networks:
+      - backend-net
+    restart: always
+    environment: &middleware_env
+      - API_URI=http://http-api:8080
+
   nginx:
     image: nginx:latest
     container_name: nginx 

@@ -27,6 +27,8 @@ There are several `todos` left to complete this project.
 - Documentation
     - Improvements
     - Setup/Quickstart
+- Scripts
+    - Image scripts
 
 ## Inspiration
 Optimized Docker images
