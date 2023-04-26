@@ -42,6 +42,6 @@ impl Images for ImageService {
 fn safely_extract(image: Option<Image>) -> Result<Image, Status> {
     match image {
         Some(image) => Ok(image),
-        _ => Err(Status::invalid_argument("Not a valid Image Object."))
+        _ => Err(Status::invalid_argument("Not a valid Image Object.")),
     }
 }

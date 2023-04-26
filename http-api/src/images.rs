@@ -21,10 +21,7 @@ pub async fn create_image(
     }
 }
 
-pub async fn read_image(
-    id: String,
-    channel: Channel,
-) -> Result<Image, Box<dyn std::error::Error>> {
+pub async fn read_image(id: String, channel: Channel) -> Result<Image, Box<dyn std::error::Error>> {
     let mut client = ImagesClient::new(channel);
     let req = Request::new(ReadImageRequest { id });
 

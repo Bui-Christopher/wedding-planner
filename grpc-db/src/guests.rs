@@ -62,6 +62,6 @@ impl Guests for GuestService {
 fn safely_extract(guest: Option<Guest>) -> Result<Guest, Status> {
     match guest {
         Some(guest) => Ok(guest),
-        _ => Err(Status::invalid_argument("Not a valid Guest Object."))
+        _ => Err(Status::invalid_argument("Not a valid Guest Object.")),
     }
 }

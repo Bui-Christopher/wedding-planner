@@ -2,23 +2,23 @@ version: "3.9"
 networks:
   backend-net:
 services:
-  scylla:
-    image: scylladb/scylla:5.1.8
-    container_name: scylla
-    hostname: scylla
-    networks:
-      - backend-net
-    volumes:
-      - ./db:/var/lib/scylla:rw
-
-  # http-api:
-  #   image: http-api:latest
-  #   container_name: http-api
-  #   hostname: http-api
+  # scylla:
+  #   image: scylladb/scylla:5.1.8
+  #   container_name: scylla
+  #   hostname: scylla
   #   networks:
   #     - backend-net
-  #   ports:
-  #     - 8080:8080
+  #   volumes:
+  #     - ./db:/var/lib/scylla:rw
+  #
+  http-api:
+    image: http-api:latest
+    container_name: http-api
+    hostname: http-api
+    networks:
+      - backend-net
+    ports:
+      - 8080:8080
   #
   # grpc-db:
   #   image: grpc-db:latest
@@ -27,4 +27,14 @@ services:
   #   networks:
   #     - backend-net
   #   restart: always
-
+  nginx:
+    image: nginx:latest
+    container_name: nginx 
+    hostname: nginx 
+    networks:
+      - backend-net
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro

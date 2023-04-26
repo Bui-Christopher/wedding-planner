@@ -5,10 +5,7 @@ use proto::{
 use tonic::{transport::Channel, Request};
 use uuid::Uuid;
 
-pub async fn create_goal(
-    goal: Goal,
-    channel: Channel,
-) -> Result<Uuid, Box<dyn std::error::Error>> {
+pub async fn create_goal(goal: Goal, channel: Channel) -> Result<Uuid, Box<dyn std::error::Error>> {
     let mut client = GoalsClient::new(channel);
     let req = Request::new(CreateGoalRequest { goal: Some(goal) });
 
@@ -21,10 +18,7 @@ pub async fn create_goal(
     }
 }
 
-pub async fn read_goal(
-    id: String,
-    channel: Channel,
-) -> Result<Goal, Box<dyn std::error::Error>> {
+pub async fn read_goal(id: String, channel: Channel) -> Result<Goal, Box<dyn std::error::Error>> {
     let mut client = GoalsClient::new(channel);
     let req = Request::new(ReadGoalRequest { id });
 
@@ -39,9 +33,7 @@ pub async fn read_goal(
     }
 }
 
-pub async fn read_multi_goals(
-    channel: Channel,
-) -> Result<Vec<Goal>, Box<dyn std::error::Error>> {
+pub async fn read_multi_goals(channel: Channel) -> Result<Vec<Goal>, Box<dyn std::error::Error>> {
     let mut client = GoalsClient::new(channel);
     let req = Request::new(ReadMultiGoalsRequest {});
 
@@ -51,10 +43,7 @@ pub async fn read_multi_goals(
     Ok(resp.goals)
 }
 
-pub async fn update_goal(
-    goal: Goal,
-    channel: Channel,
-) -> Result<Uuid, Box<dyn std::error::Error>> {
+pub async fn update_goal(goal: Goal, channel: Channel) -> Result<Uuid, Box<dyn std::error::Error>> {
     let mut client = GoalsClient::new(channel);
     let req = Request::new(UpdateGoalRequest { goal: Some(goal) });
 
@@ -67,10 +56,7 @@ pub async fn update_goal(
     }
 }
 
-pub async fn delete_goal(
-    id: String,
-    channel: Channel,
-) -> Result<Uuid, Box<dyn std::error::Error>> {
+pub async fn delete_goal(id: String, channel: Channel) -> Result<Uuid, Box<dyn std::error::Error>> {
     let mut client = GoalsClient::new(channel);
     let req = Request::new(DeleteGoalRequest { id });
 

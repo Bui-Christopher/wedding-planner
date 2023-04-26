@@ -142,7 +142,10 @@ impl Api {
     async fn create_image(&self, content: Binary<Vec<u8>>) -> JsonResponse<Uuid> {
         let content = content.0;
         debug!("Creating image...");
-        let image = Image { content, ..Default::default()};
+        let image = Image {
+            content,
+            ..Default::default()
+        };
         match create_image(image, self.grpc_channel.clone()).await {
             Ok(uuid) => JsonResponse::ok(uuid),
             Err(error) => JsonResponse::internal_error(error.to_string()),

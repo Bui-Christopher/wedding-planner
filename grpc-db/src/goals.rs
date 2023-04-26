@@ -62,6 +62,6 @@ impl Goals for GoalService {
 fn safely_extract(goal: Option<Goal>) -> Result<Goal, Status> {
     match goal {
         Some(goal) => Ok(goal),
-        _ => Err(Status::invalid_argument("Not a valid Goal Object."))
+        _ => Err(Status::invalid_argument("Not a valid Goal Object.")),
     }
 }

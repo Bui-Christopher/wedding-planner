@@ -12,16 +12,22 @@ The grpc middleware is the bridge between frontend HTTP and backend DB.
 This is the library crate which defines the objects/methods that are passed between services.
 
 # TODOS
-There are several `todos` left to complete this demo project. 
+There are several `todos` left to complete this project. 
+- Proto
+    - Clean up Guests object by deleting username
 - HTTP-API
-    - Dockerize
+    - Return filename with image 
 - gRPC-DB
     - Dockerize
     - Write data to DB
 - DB
-    - Cassandra/Scylla
+    - Scylla
 - NGINX
-    - Set up reverse proxy
-Documentation
+    - Set up self signed certs 
+- Documentation
     - Improvements
     - Setup/Quickstart
+
+## Inspiration
+Optimized Docker images
+- https://blog.gheo.tech/posts/rust-docker-images/

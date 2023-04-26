@@ -14,7 +14,8 @@ use poem_openapi::OpenApiService;
 use std::env::var;
 
 lazy_static! {
-    static ref MIDDLEWARE_URI: String = var("MIDDLEWARE_URI").unwrap_or("http://localhost:8081".to_string());
+    static ref MIDDLEWARE_URI: String =
+        var("MIDDLEWARE_URI").unwrap_or("http://localhost:8081".to_string());
     static ref API_URI: String = var("API_URI").unwrap_or("0.0.0.0:8080".to_string());
 }
 
@@ -24,10 +25,10 @@ async fn main() -> Result<(), std::io::Error> {
     let channel = tonic::transport::Channel::from_static(&MIDDLEWARE_URI).connect_lazy();
     let api = api::Api::new(channel);
     let api_service =
-        OpenApiService::new(api, "RSVP/Registry API", "1.0");
+        OpenApiService::new(api, "RSVP/Registry API", "1.0").server("http://localhost/api/v1");
 
     let ui = api_service.swagger_ui();
-    let app = Route::new().nest("/api/v1/", api_service).nest("/api/v1/doc", ui);
+    let app = Route::new().nest("/", api_service).nest("/doc", ui);
 
     info!("Starting http server");
     poem::Server::new(TcpListener::bind(API_URI.to_string()))
