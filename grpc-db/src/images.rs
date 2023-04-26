@@ -24,7 +24,10 @@ impl Images for ImageService {
         req: Request<ReadImageRequest>,
     ) -> Result<Response<ReadImageResponse>, Status> {
         let ReadImageRequest { id: _id } = req.into_inner();
-        let image = Image::default();
+        let image = Image {
+            content: vec![],
+            ..Default::default()
+        };
         let resp = ReadImageResponse { image: Some(image) };
         Ok(Response::new(resp))
     }
@@ -42,6 +45,9 @@ impl Images for ImageService {
 fn safely_extract(image: Option<Image>) -> Result<Image, Status> {
     match image {
         Some(image) => Ok(image),
-        _ => Err(Status::invalid_argument("Not a valid Image Object.")),
+        _ => {
+            warn!("failed to extract image");
+            Err(Status::invalid_argument("Not a valid Image Object."))
+        }
     }
 }

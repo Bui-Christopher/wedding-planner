@@ -7,7 +7,7 @@ use crate::{
 
 use poem_openapi::{
     param::{Path, Query},
-    payload::{Binary, Json, PlainText},
+    payload::{Binary, Json, PlainText, Response},
     OpenApi,
 };
 use proto::objects::{Goal, Guest, Image};
@@ -138,13 +138,23 @@ impl Api {
     }
 
     // API for Images
+    // TODO: Pass Image Filename + Extension
     #[oai(path = "/images", method = "post")]
-    async fn create_image(&self, content: Binary<Vec<u8>>) -> JsonResponse<Uuid> {
+    async fn create_image(
+        &self,
+        content: Binary<Vec<u8>>,
+        filename: Query<String>,
+        extension: Query<String>,
+    ) -> JsonResponse<Uuid> {
         let content = content.0;
+        let filename = filename.0.to_string();
+        let extension = extension.0.to_string();
         debug!("Creating image...");
         let image = Image {
             content,
-            ..Default::default()
+            filename,
+            extension,
+            id: Uuid::new_v4().to_string(), 
         };
         match create_image(image, self.grpc_channel.clone()).await {
             Ok(uuid) => JsonResponse::ok(uuid),
@@ -152,16 +162,14 @@ impl Api {
         }
     }
 
+    // TODO: Return Image Filename + Extension
     #[oai(path = "/images/:id", method = "get")]
-    async fn read_image(&self, id: Path<Uuid>) -> BinaryResponse {
+    async fn read_image(&self, id: Path<Uuid>) -> Response<BinaryResponse> {
         let id = id.0.to_string();
         debug!("Reading specific image: {id}.");
         match read_image(id, self.grpc_channel.clone()).await {
-            Ok(image) => {
-                let content = image.content;
-                BinaryResponse::ok(Binary(content))
-            }
-            Err(error) => BinaryResponse::internal_error(error.to_string()),
+            Ok(image) => BinaryResponse::ok(Binary(image.content), image.filename, image.extension),
+            Err(error) => BinaryResponse::internal_error(error.to_string()).into(),
         }
     }
 

@@ -17,6 +17,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "#[oai(default = \"crate::common::get_new_uuid\")]",
         )
         .field_attribute(
+            "objects.Guest.first_name",
+            "#[oai(default = \"String::new\")]",
+        )
+        .field_attribute(
+            "objects.Guest.last_name",
+            "#[oai(default = \"String::new\")]",
+        )
+        .field_attribute("objects.Guest.address", "#[oai(default = \"String::new\")]")
+        .field_attribute("objects.Guest.email", "#[oai(default = \"String::new\")]")
+        .field_attribute(
             "objects.Guest.food_preferences",
             "#[oai(default = \"String::new\")]",
         )
@@ -35,6 +45,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .field_attribute(
             "objects.Image.id",
             "#[oai(default = \"crate::common::get_new_uuid\")]",
+        )
+        .field_attribute(
+            "objects.Image.filename",
+            "#[oai(default = \"String::new\")]",
+        )
+        .field_attribute(
+            "objects.Image.extension",
+            "#[oai(default = \"String::new\")]",
+        )
+        .field_attribute(
+            "entity.Image.cotent",
+            "#[serde(with = \"serde_hex::SerHexSeq::<serde_hex::StrictPfx>\")]",
         )
         .compile(&["methods.proto", "objects.proto"], &["."])?;
     Ok(())

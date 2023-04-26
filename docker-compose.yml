@@ -21,6 +21,7 @@ services:
       - 8080:8080
     environment: &http_env
       - MIDDLEWARE_URI=http://grpc-db:8081
+      - RUST_LOG=DEBUG
 
   grpc-db:
     image: grpc-db:latest
@@ -30,6 +31,7 @@ services:
       - backend-net
     restart: always
     environment: &middleware_env
+      - RUST_LOG=DEBUG
       - API_URI=http://http-api:8080
 
   nginx:

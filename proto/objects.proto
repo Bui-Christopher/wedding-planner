@@ -4,18 +4,17 @@ package objects;
 message Guest {
         string id = 1;
 
-        string username = 2;
-        // Username and Phone Number to login
-        string phone_number = 3;
+        // Phone Number is required 
+        string phone_number = 2;
        
-        string first_name = 4;
-        string last_name = 5;
+        string first_name = 3;
+        string last_name = 4;
 
-        string address = 6; 
-        string email = 7; 
+        string address = 5; 
+        string email = 6; 
 
-        string food_preferences = 8;
-        string song_requests = 9;
+        string food_preferences = 7;
+        string song_requests = 8;
 }
 
 message Goal {
@@ -29,4 +28,6 @@ message Goal {
 message Image {
         string id = 1;
         bytes content = 2;
+        string filename = 3;
+        string extension = 4;
 }

@@ -1,5 +1,5 @@
 use poem_openapi::{
-    payload::{Binary, Json, PlainText},
+    payload::{Binary, Json, PlainText, Response},
     types::{ParseFromJSON, ToJSON},
     ApiResponse,
 };
@@ -23,17 +23,33 @@ impl<T: ParseFromJSON + ToJSON + Send + Sync> JsonResponse<T> {
 
 #[derive(ApiResponse)]
 pub enum BinaryResponse {
-    #[oai(status = 200)]
+    #[oai(
+        status = 200,
+        header(
+            name = "Content-Disposition",
+            type = "String",
+            description = "Content-Disposition header"
+        )
+    )]
     Ok(Binary<Vec<u8>>),
     #[oai(status = 500)]
     InternalError(PlainText<String>),
 }
 
 impl BinaryResponse {
-    pub fn ok(payload: Binary<Vec<u8>>) -> Self {
-        Self::Ok(payload)
+    pub fn ok(payload: Binary<Vec<u8>>, filename: String, extension: String) -> Response<Self> {
+        Response::new(Self::Ok(payload)).header(
+            "Content-Disposition",
+            format!("file=\"{filename}.{extension}\""),
+        )
     }
     pub fn internal_error(error: String) -> Self {
         Self::InternalError(PlainText(error))
+    }
+}
+
+impl From<BinaryResponse> for Response<BinaryResponse> {
+    fn from(response: BinaryResponse) -> Self {
+        Self::new(response)
     }
 }

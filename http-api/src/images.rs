@@ -12,12 +12,17 @@ pub async fn create_image(
     let mut client = ImagesClient::new(channel);
     let req = Request::new(CreateImageRequest { image: Some(image) });
 
+    debug!("Sending Request...");
     let resp = client.create_image(req).await?;
     let resp = resp.into_inner();
 
+    debug!("Attempting to parse id to str...");
     match Uuid::parse_str(&resp.id) {
         Ok(uuid) => Ok(uuid),
-        Err(e) => Err(Box::new(e)),
+        Err(e) => {
+            debug!("Failed to parse uuid");
+            Err(Box::new(e))
+        }
     }
 }
 

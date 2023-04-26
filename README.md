@@ -18,7 +18,6 @@ There are several `todos` left to complete this project.
 - HTTP-API
     - Return filename with image 
 - gRPC-DB
-    - Dockerize
     - Write data to DB
 - DB
     - Scylla
@@ -27,8 +26,6 @@ There are several `todos` left to complete this project.
 - Documentation
     - Improvements
     - Setup/Quickstart
-- Scripts
-    - Image scripts
 
 ## Inspiration
 Optimized Docker images
