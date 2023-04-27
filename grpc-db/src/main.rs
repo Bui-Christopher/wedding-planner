@@ -31,7 +31,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .add_service(GoalsServer::new(goals_service))
         .add_service(ImagesServer::new(images_service))
         .add_service(GuestsServer::new(guests_service))
-        .serve("0.0.0.0:8081".parse()?)
+        .serve("{MIDDLEWARE_URI}".parse()?)
         .await?;
 
     Ok(())

@@ -15,6 +15,7 @@ impl Goals for GoalService {
     ) -> Result<Response<CreateGoalResponse>, Status> {
         let CreateGoalRequest { goal } = req.into_inner();
         let goal = safely_extract(goal)?;
+
         let resp = CreateGoalResponse { id: goal.id };
         Ok(Response::new(resp))
     }
@@ -24,6 +25,7 @@ impl Goals for GoalService {
         req: Request<ReadGoalRequest>,
     ) -> Result<Response<ReadGoalResponse>, Status> {
         let ReadGoalRequest { id: _id } = req.into_inner();
+
         let goal = Goal::default();
         let resp = ReadGoalResponse { goal: Some(goal) };
         Ok(Response::new(resp))
@@ -34,6 +36,7 @@ impl Goals for GoalService {
         req: Request<ReadMultiGoalsRequest>,
     ) -> Result<Response<ReadMultiGoalsResponse>, Status> {
         let ReadMultiGoalsRequest {} = req.into_inner();
+        
         let goals = vec![];
         let resp = ReadMultiGoalsResponse { goals };
         Ok(Response::new(resp))
@@ -45,6 +48,7 @@ impl Goals for GoalService {
     ) -> Result<Response<UpdateGoalResponse>, Status> {
         let UpdateGoalRequest { goal } = req.into_inner();
         let goal = safely_extract(goal)?;
+
         let resp = UpdateGoalResponse { id: goal.id };
         Ok(Response::new(resp))
     }
@@ -54,6 +58,7 @@ impl Goals for GoalService {
         req: Request<DeleteGoalRequest>,
     ) -> Result<Response<DeleteGoalResponse>, Status> {
         let DeleteGoalRequest { id } = req.into_inner();
+
         let resp = DeleteGoalResponse { id };
         Ok(Response::new(resp))
     }

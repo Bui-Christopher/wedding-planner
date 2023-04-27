@@ -15,6 +15,7 @@ impl Images for ImageService {
     ) -> Result<Response<CreateImageResponse>, Status> {
         let CreateImageRequest { image } = req.into_inner();
         let image = safely_extract(image)?;
+
         let resp = CreateImageResponse { id: image.id };
         Ok(Response::new(resp))
     }
@@ -24,6 +25,7 @@ impl Images for ImageService {
         req: Request<ReadImageRequest>,
     ) -> Result<Response<ReadImageResponse>, Status> {
         let ReadImageRequest { id: _id } = req.into_inner();
+
         let image = Image {
             content: vec![],
             ..Default::default()
@@ -37,6 +39,7 @@ impl Images for ImageService {
         req: Request<DeleteImageRequest>,
     ) -> Result<Response<DeleteImageResponse>, Status> {
         let DeleteImageRequest { id } = req.into_inner();
+
         let resp = DeleteImageResponse { id };
         Ok(Response::new(resp))
     }

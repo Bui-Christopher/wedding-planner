@@ -14,19 +14,28 @@ This is the library crate which defines the objects/methods that are passed betw
 # TODOS
 There are several `todos` left to complete this project. 
 - Proto
-    - Clean up Guests object by deleting username
+    - Confirm what db is being used to know if image.content should be sent as hex blob
 - HTTP-API
-    - Return filename with image 
+    - Logs
 - gRPC-DB
     - Write data to DB
+    - Logs
 - DB
     - Scylla
 - NGINX
     - Set up self signed certs 
 - Documentation
-    - Improvements
+    - Improvements/TODOs
     - Setup/Quickstart
 
 ## Inspiration
 Optimized Docker images
 - https://blog.gheo.tech/posts/rust-docker-images/
+
+
+`export RUST_LOG=debug`
+
+# Inspiration
+API responses inspired through poem/examples: 
+- https://github.com/poem-web/poem/blob/master/examples/openapi/uniform-response/src/main.rs
+- https://github.com/poem-web/poem/blob/master/examples/openapi/users-crud/src/main.rs

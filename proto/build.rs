@@ -55,7 +55,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "#[oai(default = \"String::new\")]",
         )
         .field_attribute(
-            "entity.Image.cotent",
+            "entity.Image.content",
             "#[serde(with = \"serde_hex::SerHexSeq::<serde_hex::StrictPfx>\")]",
         )
         .compile(&["methods.proto", "objects.proto"], &["."])?;

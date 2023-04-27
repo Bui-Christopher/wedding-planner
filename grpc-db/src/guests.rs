@@ -15,6 +15,7 @@ impl Guests for GuestService {
     ) -> Result<Response<CreateGuestResponse>, Status> {
         let CreateGuestRequest { guest } = req.into_inner();
         let guest = safely_extract(guest)?;
+        
         let resp = CreateGuestResponse { id: guest.id };
         Ok(Response::new(resp))
     }
@@ -24,6 +25,7 @@ impl Guests for GuestService {
         req: Request<ReadGuestRequest>,
     ) -> Result<Response<ReadGuestResponse>, Status> {
         let ReadGuestRequest { id: _id } = req.into_inner();
+
         let guest = Guest::default();
         let resp = ReadGuestResponse { guest: Some(guest) };
         Ok(Response::new(resp))
@@ -34,6 +36,7 @@ impl Guests for GuestService {
         req: Request<ReadMultiGuestsRequest>,
     ) -> Result<Response<ReadMultiGuestsResponse>, Status> {
         let ReadMultiGuestsRequest {} = req.into_inner();
+
         let guests = vec![];
         let resp = ReadMultiGuestsResponse { guests };
         Ok(Response::new(resp))
@@ -45,6 +48,7 @@ impl Guests for GuestService {
     ) -> Result<Response<UpdateGuestResponse>, Status> {
         let UpdateGuestRequest { guest } = req.into_inner();
         let guest = safely_extract(guest)?;
+
         let resp = UpdateGuestResponse { id: guest.id };
         Ok(Response::new(resp))
     }
@@ -54,6 +58,7 @@ impl Guests for GuestService {
         req: Request<DeleteGuestRequest>,
     ) -> Result<Response<DeleteGuestResponse>, Status> {
         let DeleteGuestRequest { id } = req.into_inner();
+
         let resp = DeleteGuestResponse { id };
         Ok(Response::new(resp))
     }

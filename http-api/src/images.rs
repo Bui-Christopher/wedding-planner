@@ -11,16 +11,12 @@ pub async fn create_image(
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
     let mut client = ImagesClient::new(channel);
     let req = Request::new(CreateImageRequest { image: Some(image) });
+    let resp = client.create_image(req).await?.into_inner();
 
-    debug!("Sending Request...");
-    let resp = client.create_image(req).await?;
-    let resp = resp.into_inner();
-
-    debug!("Attempting to parse id to str...");
     match Uuid::parse_str(&resp.id) {
         Ok(uuid) => Ok(uuid),
         Err(e) => {
-            debug!("Failed to parse uuid");
+            debug!("Failed to parse image uuid");
             Err(Box::new(e))
         }
     }
@@ -29,14 +25,12 @@ pub async fn create_image(
 pub async fn read_image(id: String, channel: Channel) -> Result<Image, Box<dyn std::error::Error>> {
     let mut client = ImagesClient::new(channel);
     let req = Request::new(ReadImageRequest { id });
+    let resp = client.read_image(req).await?.into_inner();
 
-    let resp = client.read_image(req).await?;
-    let resp = resp.into_inner();
-    let image = resp.image;
-
-    if let Some(image) = image {
+    if let Some(image) = resp.image {
         Ok(image)
     } else {
+        debug!("Failed to image");
         Err("Failed to read image.".into())
     }
 }
@@ -47,12 +41,13 @@ pub async fn delete_image(
 ) -> Result<Uuid, Box<dyn std::error::Error>> {
     let mut client = ImagesClient::new(channel);
     let req = Request::new(DeleteImageRequest { id });
-
-    let resp = client.delete_image(req).await?;
-    let resp = resp.into_inner();
+    let resp = client.delete_image(req).await?.into_inner();
 
     match Uuid::parse_str(&resp.id) {
         Ok(uuid) => Ok(uuid),
-        Err(e) => Err(Box::new(e)),
+        Err(e) => {
+            debug!("Failed to parse image uuid");
+            Err(Box::new(e))
+        }
     }
 }

@@ -37,7 +37,7 @@ impl Api {
         }
     }
 
-    // API for Guests
+    // Handler for Guests
     #[oai(path = "/guests", method = "post")]
     async fn create_guest(&self, guest: Json<Guest>) -> JsonResponse<Uuid> {
         let guest = guest.0;
@@ -87,7 +87,7 @@ impl Api {
         }
     }
 
-    // API for Goals
+    // Handler or Goals
     #[oai(path = "/goals", method = "post")]
     async fn create_goal(&self, goal: Json<Goal>) -> JsonResponse<Uuid> {
         let goal = goal.0;
@@ -137,8 +137,7 @@ impl Api {
         }
     }
 
-    // API for Images
-    // TODO: Pass Image Filename + Extension
+    // Handler or Images
     #[oai(path = "/images", method = "post")]
     async fn create_image(
         &self,
@@ -154,7 +153,7 @@ impl Api {
             content,
             filename,
             extension,
-            id: Uuid::new_v4().to_string(), 
+            id: Uuid::new_v4().to_string(),
         };
         match create_image(image, self.grpc_channel.clone()).await {
             Ok(uuid) => JsonResponse::ok(uuid),
@@ -162,7 +161,6 @@ impl Api {
         }
     }
 
-    // TODO: Return Image Filename + Extension
     #[oai(path = "/images/:id", method = "get")]
     async fn read_image(&self, id: Path<Uuid>) -> Response<BinaryResponse> {
         let id = id.0.to_string();

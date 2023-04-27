@@ -19,7 +19,7 @@ services:
       - backend-net
     ports:
       - 8080:8080
-    environment: &http_env
+    environment:
       - MIDDLEWARE_URI=http://grpc-db:8081
       - RUST_LOG=DEBUG
 
@@ -30,7 +30,7 @@ services:
     networks:
       - backend-net
     restart: always
-    environment: &middleware_env
+    environment:
       - RUST_LOG=DEBUG
       - API_URI=http://http-api:8080
 
