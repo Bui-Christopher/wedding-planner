@@ -3,9 +3,21 @@ use proto::{
     objects::Guest,
 };
 use tonic::{Request, Response, Status};
+use scylla::transport::session::Session;
 
-#[derive(Default)]
-pub struct GuestService {}
+pub struct GuestService {
+    db_session: Session,
+}
+
+impl GuestService {
+    pub(super) fn new(db_session: Session) -> Self {
+        Self {db_session}
+    }
+}
+
+pub fn init_guest_server(db_session: Session) -> guests_server::GuestsServer<GuestService> {
+    guests_server::GuestsServer::new(GuestService::new(db_session)) 
+}
 
 #[tonic::async_trait]
 impl Guests for GuestService {

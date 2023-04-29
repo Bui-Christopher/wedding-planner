@@ -2,23 +2,32 @@ version: "3.9"
 networks:
   backend-net:
 services:
-  # scylla:
-  #   image: scylladb/scylla:5.1.8
-  #   container_name: scylla
-  #   hostname: scylla
-  #   networks:
-  #     - backend-net
-  #   volumes:
-  #     - ./db:/var/lib/scylla:rw
-  #
+
+  scylla:
+    image: scylladb/scylla:5.1.8
+    container_name: scylla
+    hostname: scylla
+    networks:
+      - backend-net
+    ports:
+      - 9042:9042
+    volumes:
+      - ./db:/var/lib/scylla:rw
+
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
   http-api:
     image: http-api:latest
     container_name: http-api
     hostname: http-api
     networks:
       - backend-net
-    ports:
-      - 8080:8080
+    # ports:
+    #   - 8080:8080
     environment:
       - MIDDLEWARE_URI=http://grpc-db:8081
       - RUST_LOG=DEBUG
@@ -33,6 +42,10 @@ services:
     environment:
       - RUST_LOG=DEBUG
       - API_URI=http://http-api:8080
+      - IS_LOCAL_DEV=true
+    depends_on:
+      scylla:
+          condition: service_healthy
 
   nginx:
     image: nginx:latest

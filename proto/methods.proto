@@ -5,7 +5,8 @@ import "objects.proto";
 package methods;
 
 
-// CRUD Operations
+// CRUD Operations for Guests, Goals, and Images
+
 service Guests {
     rpc CreateGuest (CreateGuestRequest) returns (CreateGuestResponse);
     rpc ReadGuest (ReadGuestRequest) returns (ReadGuestResponse);

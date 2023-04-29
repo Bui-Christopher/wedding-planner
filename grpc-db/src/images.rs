@@ -3,9 +3,21 @@ use proto::{
     objects::Image,
 };
 use tonic::{Request, Response, Status};
+use scylla::transport::session::Session;
 
-#[derive(Default)]
-pub struct ImageService {}
+pub struct ImageService {
+    db_session: Session,
+}
+
+impl ImageService {
+    pub(super) fn new(db_session: Session) -> Self {
+        Self {db_session}
+    }
+}
+
+pub fn init_image_server(db_session: Session) -> images_server::ImagesServer<ImageService> {
+    images_server::ImagesServer::new(ImageService::new(db_session)) 
+}
 
 #[tonic::async_trait]
 impl Images for ImageService {

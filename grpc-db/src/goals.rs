@@ -3,9 +3,21 @@ use proto::{
     objects::Goal,
 };
 use tonic::{Request, Response, Status};
+use scylla::transport::session::Session;
 
-#[derive(Default)]
-pub struct GoalService {}
+pub struct GoalService {
+    db_session: Session,
+}
+
+impl GoalService {
+    pub(super) fn new(db_session: Session) -> Self {
+        Self {db_session}
+    }
+}
+
+pub fn init_goal_server(db_session: Session) -> goals_server::GoalsServer<GoalService> {
+    goals_server::GoalsServer::new(GoalService::new(db_session)) 
+}
 
 #[tonic::async_trait]
 impl Goals for GoalService {

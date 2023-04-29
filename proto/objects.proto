@@ -20,9 +20,10 @@ message Guest {
 message Goal {
         string id = 1;
         string name = 2;
-        int32 progress_amt = 3;
-        int32 total_amt = 4;
-        string image = 5;
+        string description = 3;
+        int32 progress_amt = 4;
+        int32 total_amt = 5;
+        string image = 6;
 }
 
 message Image {

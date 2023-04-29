@@ -13,17 +13,17 @@ This is the library crate which defines the objects/methods that are passed betw
 
 # TODOS
 There are several `todos` left to complete this project. 
-- Proto
-    - Confirm what db is being used to know if image.content should be sent as hex blob
 - HTTP-API
     - Logs
 - gRPC-DB
     - Write data to DB
     - Logs
 - DB
-    - Scylla
+    - Connect to managed service (possibly use cql_proxy)
 - NGINX
     - Set up self signed certs 
+- Docker
+    - Push images to dockerhub
 - Documentation
     - Improvements/TODOs
     - Setup/Quickstart
