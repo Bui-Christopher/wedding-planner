@@ -4,7 +4,7 @@ networks:
 services:
 
   scylla:
-    image: scylladb/scylla:5.1.8
+    image: scylladb/scylla:latest
     container_name: scylla
     hostname: scylla
     networks:

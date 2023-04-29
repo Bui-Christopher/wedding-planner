@@ -2,15 +2,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     tonic_build::configure()
         .type_attribute(
             "objects.Guest",
-            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize)]",
+            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize, scylla::macros::FromRow, scylla::ValueList)]",
         )
         .type_attribute(
             "objects.Goal",
-            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize)]",
+            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize, scylla::macros::FromRow, scylla::ValueList)]",
         )
         .type_attribute(
             "objects.Image",
-            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize)]",
+            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize, scylla::macros::FromRow, scylla::ValueList)]",
         )
         .field_attribute(
             "objects.Guest.id",

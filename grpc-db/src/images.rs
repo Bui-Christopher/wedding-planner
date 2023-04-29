@@ -5,6 +5,8 @@ use proto::{
 use tonic::{Request, Response, Status};
 use scylla::transport::session::Session;
 
+use crate::database;
+
 pub struct ImageService {
     db_session: Session,
 }
@@ -28,6 +30,7 @@ impl Images for ImageService {
         let CreateImageRequest { image } = req.into_inner();
         let image = safely_extract(image)?;
 
+        database::create_image(&self.db_session, &image).await?;
         let resp = CreateImageResponse { id: image.id };
         Ok(Response::new(resp))
     }
@@ -52,6 +55,7 @@ impl Images for ImageService {
     ) -> Result<Response<DeleteImageResponse>, Status> {
         let DeleteImageRequest { id } = req.into_inner();
 
+        database::delete_image(&self.db_session, id.clone()).await?;
         let resp = DeleteImageResponse { id };
         Ok(Response::new(resp))
     }

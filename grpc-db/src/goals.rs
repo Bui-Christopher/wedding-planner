@@ -5,6 +5,8 @@ use proto::{
 use tonic::{Request, Response, Status};
 use scylla::transport::session::Session;
 
+use crate::database;
+
 pub struct GoalService {
     db_session: Session,
 }
@@ -28,6 +30,7 @@ impl Goals for GoalService {
         let CreateGoalRequest { goal } = req.into_inner();
         let goal = safely_extract(goal)?;
 
+        database::create_goal(&self.db_session, &goal).await?;
         let resp = CreateGoalResponse { id: goal.id };
         Ok(Response::new(resp))
     }
@@ -61,6 +64,7 @@ impl Goals for GoalService {
         let UpdateGoalRequest { goal } = req.into_inner();
         let goal = safely_extract(goal)?;
 
+        database::update_goal(&self.db_session, &goal).await?;
         let resp = UpdateGoalResponse { id: goal.id };
         Ok(Response::new(resp))
     }
@@ -71,6 +75,7 @@ impl Goals for GoalService {
     ) -> Result<Response<DeleteGoalResponse>, Status> {
         let DeleteGoalRequest { id } = req.into_inner();
 
+        database::delete_goal(&self.db_session, id.clone()).await?;
         let resp = DeleteGoalResponse { id };
         Ok(Response::new(resp))
     }

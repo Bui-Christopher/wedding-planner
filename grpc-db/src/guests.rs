@@ -5,6 +5,8 @@ use proto::{
 use tonic::{Request, Response, Status};
 use scylla::transport::session::Session;
 
+use crate::database;
+
 pub struct GuestService {
     db_session: Session,
 }
@@ -23,11 +25,11 @@ pub fn init_guest_server(db_session: Session) -> guests_server::GuestsServer<Gue
 impl Guests for GuestService {
     async fn create_guest(
         &self,
-        req: Request<CreateGuestRequest>,
-    ) -> Result<Response<CreateGuestResponse>, Status> {
+        req: Request<CreateGuestRequest>,) -> Result<Response<CreateGuestResponse>, Status> {
         let CreateGuestRequest { guest } = req.into_inner();
         let guest = safely_extract(guest)?;
         
+        database::create_guest(&self.db_session, &guest).await?;
         let resp = CreateGuestResponse { id: guest.id };
         Ok(Response::new(resp))
     }
@@ -71,6 +73,7 @@ impl Guests for GuestService {
     ) -> Result<Response<DeleteGuestResponse>, Status> {
         let DeleteGuestRequest { id } = req.into_inner();
 
+        database::delete_guest(&self.db_session, id.clone()).await?;
         let resp = DeleteGuestResponse { id };
         Ok(Response::new(resp))
     }
