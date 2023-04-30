@@ -53,6 +53,7 @@ docker compose kill && docker compose down --remove-orphans
 - Additional HTTP codes
 - Error handling is loosely done
 - github workflows
+- testing
 
 ## TODOS
 #### Below are a list of TODOS to be considered complete
