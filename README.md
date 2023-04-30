@@ -56,18 +56,11 @@ Logs are set through env variables: `export RUST_LOG=debug`
 - github workflows
 
 ## TODOS
-There are several `todos` left to complete this project. 
-- HTTP-API
-    - Logs
-- gRPC-DB
-    - Write data to DB
-    - Logs
+- HTTP-API/gRPC-DB
+    - Improve Logs
 - DB
     - Connect to managed service (possibly use cql_proxy)
 - NGINX
     - Set up self signed certs 
 - Docker
     - Push images to dockerhub
-- Documentation
-    - Improvements
-    - Setup/Quickstart
