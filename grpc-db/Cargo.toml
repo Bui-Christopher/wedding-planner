@@ -15,3 +15,9 @@ lazy_static = "1.4"
 env_logger = { version = "0.10" }
 log = { version = "0.4" }
 scylla = "0.8"
+
+[profile.release]
+strip = true
+codegen-units = 1
+opt-level = "s"
+lto = true
