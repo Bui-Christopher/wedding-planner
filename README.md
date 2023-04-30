@@ -15,7 +15,7 @@ This is the library crate which defines the objects/methods that are passed betw
 goals, guests, and images.
 
 ## Scylla
-Scylla stores the data locally in the './db' folder. To restart local data, `docker compose kill && docker compose down`
+Scylla stores the data locally in the `./db` folder. To restart local data, `docker compose kill && docker compose down`
 then delete the `./db` folder. 
 
 It's also possible to manipulate the data from within the container. `docker exec -it scylla cqlsh`
@@ -32,8 +32,7 @@ docker compose kill && docker compose down --remove-orphans
 ```
 
 ## Docker
-Logs are set through env variables: `export RUST_LOG=debug`
-`setup.sh` Used to compile/build docker images
+`setup.sh` is used by the maintainer to compile/build and push docker images to dockerhub
 
 ## Inspiration
 - Optimized Docker images
@@ -56,11 +55,11 @@ Logs are set through env variables: `export RUST_LOG=debug`
 - github workflows
 
 ## TODOS
+#### Below are a list of TODOS to be considered complete
 - HTTP-API/gRPC-DB
     - Improve Logs
-- DB
-    - Connect to managed service (possibly use cql_proxy)
-- NGINX
-    - Set up self signed certs 
-- Docker
-    - Push images to dockerhub
+- Production use case
+    - DB
+        - Connect to managed service (possibly use cql_proxy)
+    - NGINX
+        - Set up self signed certs 
