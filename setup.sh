@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir -p .tmp
 
 cargo build --release --target=x86_64-unknown-linux-musl
 mv target/x86_64-unknown-linux-musl/release/http-api .tmp/http-api
@@ -12,4 +13,4 @@ docker push cbui125/http-api:$(git describe)
 docker build \
     -t cbui125/grpc-db:$(git describe) \
     -f grpc-db/Dockerfile .tmp/ 
-docker push cbui125/http-api:$(git describe)
+docker push cbui125/grpc-db:$(git describe)

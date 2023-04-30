@@ -22,7 +22,7 @@ services:
       retries: 20
 
   http-api:
-    image: cbui125/http-api:0.1.1
+    image: cbui125/http-api:0.1.2
     container_name: http-api
     hostname: http-api
     networks:
@@ -34,7 +34,7 @@ services:
       - RUST_LOG=DEBUG
 
   grpc-db:
-    image: cbui125/grpc-db:0.1.1
+    image: cbui125/grpc-db:0.1.2
     container_name: grpc-db 
     hostname: grpc-db 
     networks:
