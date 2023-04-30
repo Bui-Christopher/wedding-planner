@@ -29,9 +29,10 @@ impl Goals for GoalService {
     ) -> Result<Response<CreateGoalResponse>, Status> {
         let CreateGoalRequest { goal } = req.into_inner();
         let goal = safely_extract(goal)?;
+        let id = goal.id.clone();
 
-        database::create_goal(&self.db_session, &goal).await?;
-        let resp = CreateGoalResponse { id: goal.id };
+        database::insert_goal(&self.db_session, goal).await?;
+        let resp = CreateGoalResponse { id };
         Ok(Response::new(resp))
     }
 
@@ -39,9 +40,9 @@ impl Goals for GoalService {
         &self,
         req: Request<ReadGoalRequest>,
     ) -> Result<Response<ReadGoalResponse>, Status> {
-        let ReadGoalRequest { id: _id } = req.into_inner();
+        let ReadGoalRequest { id } = req.into_inner();
 
-        let goal = Goal::default();
+        let goal = database::read_goal(&self.db_session, id).await?;
         let resp = ReadGoalResponse { goal: Some(goal) };
         Ok(Response::new(resp))
     }
@@ -52,7 +53,7 @@ impl Goals for GoalService {
     ) -> Result<Response<ReadMultiGoalsResponse>, Status> {
         let ReadMultiGoalsRequest {} = req.into_inner();
         
-        let goals = vec![];
+        let goals = database::read_multi_goals(&self.db_session).await?;
         let resp = ReadMultiGoalsResponse { goals };
         Ok(Response::new(resp))
     }
@@ -63,9 +64,10 @@ impl Goals for GoalService {
     ) -> Result<Response<UpdateGoalResponse>, Status> {
         let UpdateGoalRequest { goal } = req.into_inner();
         let goal = safely_extract(goal)?;
+        let id = goal.id.clone();
 
-        database::update_goal(&self.db_session, &goal).await?;
-        let resp = UpdateGoalResponse { id: goal.id };
+        database::insert_goal(&self.db_session, goal).await?;
+        let resp = UpdateGoalResponse { id };
         Ok(Response::new(resp))
     }
 

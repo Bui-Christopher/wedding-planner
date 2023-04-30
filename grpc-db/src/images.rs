@@ -2,8 +2,8 @@ use proto::{
     methods::{images_server::Images, *},
     objects::Image,
 };
-use tonic::{Request, Response, Status};
 use scylla::transport::session::Session;
+use tonic::{Request, Response, Status};
 
 use crate::database;
 
@@ -13,12 +13,12 @@ pub struct ImageService {
 
 impl ImageService {
     pub(super) fn new(db_session: Session) -> Self {
-        Self {db_session}
+        Self { db_session }
     }
 }
 
 pub fn init_image_server(db_session: Session) -> images_server::ImagesServer<ImageService> {
-    images_server::ImagesServer::new(ImageService::new(db_session)) 
+    images_server::ImagesServer::new(ImageService::new(db_session))
 }
 
 #[tonic::async_trait]
@@ -29,9 +29,10 @@ impl Images for ImageService {
     ) -> Result<Response<CreateImageResponse>, Status> {
         let CreateImageRequest { image } = req.into_inner();
         let image = safely_extract(image)?;
+        let id = image.id.clone();
 
-        database::create_image(&self.db_session, &image).await?;
-        let resp = CreateImageResponse { id: image.id };
+        database::insert_image(&self.db_session, image).await?;
+        let resp = CreateImageResponse { id };
         Ok(Response::new(resp))
     }
 
@@ -39,12 +40,9 @@ impl Images for ImageService {
         &self,
         req: Request<ReadImageRequest>,
     ) -> Result<Response<ReadImageResponse>, Status> {
-        let ReadImageRequest { id: _id } = req.into_inner();
+        let ReadImageRequest { id } = req.into_inner();
+        let image = database::read_image(&self.db_session, id).await?;
 
-        let image = Image {
-            content: vec![],
-            ..Default::default()
-        };
         let resp = ReadImageResponse { image: Some(image) };
         Ok(Response::new(resp))
     }

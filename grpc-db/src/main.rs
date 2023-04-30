@@ -9,10 +9,10 @@ mod images;
 
 use crate::{goals::init_goal_server, guests::init_guest_server, images::init_image_server};
 use lazy_static::lazy_static;
+use scylla::transport::session::Session;
+use scylla::SessionBuilder;
 use std::env::{var, var_os};
 use tonic::transport::Server;
-use scylla::SessionBuilder;
-use scylla::transport::session::Session;
 
 lazy_static! {
     static ref MIDDLEWARE_URI: String = var("MIDDLEWARE_URI").unwrap_or("0.0.0.0:8081".to_string());
@@ -22,14 +22,23 @@ lazy_static! {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let uri = var("SCYLLA_URI").unwrap_or_else(|_| "scylla:9042".to_string());
-    let init_db_session: Session = SessionBuilder::new().known_node(uri.clone()).build().await?;
-    let goal_db_session: Session = SessionBuilder::new().known_node(uri.clone()).build().await?;
-    let image_db_session: Session = SessionBuilder::new().known_node(uri.clone()).build().await?;
+    let init_db_session: Session = SessionBuilder::new()
+        .known_node(uri.clone())
+        .build()
+        .await?;
+    let goal_db_session: Session = SessionBuilder::new()
+        .known_node(uri.clone())
+        .build()
+        .await?;
+    let image_db_session: Session = SessionBuilder::new()
+        .known_node(uri.clone())
+        .build()
+        .await?;
     let guest_db_session: Session = SessionBuilder::new().known_node(uri).build().await?;
 
     match var_os("IS_LOCAL_DEV") {
         Some(_) => database::initalize_keyspace(&init_db_session).await?,
-        None => {},
+        None => {}
     }
     database::initalize_tables(&init_db_session).await?;
     env_logger::init();

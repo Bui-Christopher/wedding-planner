@@ -2,8 +2,8 @@ use proto::{
     methods::{guests_server::Guests, *},
     objects::Guest,
 };
-use tonic::{Request, Response, Status};
 use scylla::transport::session::Session;
+use tonic::{Request, Response, Status};
 
 use crate::database;
 
@@ -13,24 +13,26 @@ pub struct GuestService {
 
 impl GuestService {
     pub(super) fn new(db_session: Session) -> Self {
-        Self {db_session}
+        Self { db_session }
     }
 }
 
 pub fn init_guest_server(db_session: Session) -> guests_server::GuestsServer<GuestService> {
-    guests_server::GuestsServer::new(GuestService::new(db_session)) 
+    guests_server::GuestsServer::new(GuestService::new(db_session))
 }
 
 #[tonic::async_trait]
 impl Guests for GuestService {
     async fn create_guest(
         &self,
-        req: Request<CreateGuestRequest>,) -> Result<Response<CreateGuestResponse>, Status> {
+        req: Request<CreateGuestRequest>,
+    ) -> Result<Response<CreateGuestResponse>, Status> {
         let CreateGuestRequest { guest } = req.into_inner();
         let guest = safely_extract(guest)?;
-        
-        database::create_guest(&self.db_session, &guest).await?;
-        let resp = CreateGuestResponse { id: guest.id };
+        let id = guest.id.clone();
+
+        database::insert_guest(&self.db_session, guest).await?;
+        let resp = CreateGuestResponse { id };
         Ok(Response::new(resp))
     }
 
@@ -38,9 +40,9 @@ impl Guests for GuestService {
         &self,
         req: Request<ReadGuestRequest>,
     ) -> Result<Response<ReadGuestResponse>, Status> {
-        let ReadGuestRequest { id: _id } = req.into_inner();
+        let ReadGuestRequest { id } = req.into_inner();
+        let guest = database::read_guest(&self.db_session, id).await?;
 
-        let guest = Guest::default();
         let resp = ReadGuestResponse { guest: Some(guest) };
         Ok(Response::new(resp))
     }
@@ -51,7 +53,7 @@ impl Guests for GuestService {
     ) -> Result<Response<ReadMultiGuestsResponse>, Status> {
         let ReadMultiGuestsRequest {} = req.into_inner();
 
-        let guests = vec![];
+        let guests = database::read_multi_guests(&self.db_session).await?;
         let resp = ReadMultiGuestsResponse { guests };
         Ok(Response::new(resp))
     }
@@ -62,8 +64,10 @@ impl Guests for GuestService {
     ) -> Result<Response<UpdateGuestResponse>, Status> {
         let UpdateGuestRequest { guest } = req.into_inner();
         let guest = safely_extract(guest)?;
+        let id = guest.id.clone();
 
-        let resp = UpdateGuestResponse { id: guest.id };
+        database::insert_guest(&self.db_session, guest).await?;
+        let resp = UpdateGuestResponse { id };
         Ok(Response::new(resp))
     }
 

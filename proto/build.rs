@@ -6,7 +6,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .type_attribute(
             "objects.Goal",
-            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize, scylla::macros::FromRow, scylla::ValueList)]",
+            "#[derive(poem_openapi::Object, serde::Serialize, serde::Deserialize, scylla::FromRow, scylla::ValueList)]",
         )
         .type_attribute(
             "objects.Image",
