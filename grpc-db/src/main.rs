@@ -35,11 +35,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()
         .await?;
     let guest_db_session: Session = SessionBuilder::new().known_node(uri).build().await?;
-
-    match var_os("IS_LOCAL_DEV") {
-        Some(_) => database::initalize_keyspace(&init_db_session).await?,
-        None => {}
+    if let Some(_is_local_dev) = var_os("IS_LOCAL_DEV") {
+        database::initalize_keyspace(&init_db_session).await?
     }
+
     database::initalize_tables(&init_db_session).await?;
     env_logger::init();
 

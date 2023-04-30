@@ -1,6 +1,6 @@
 [package]
 name = "grpc-db"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,11 +10,8 @@ proto = { version = "0.1.0", path = "../proto/" }
 tonic = "0.8"
 prost = "0.11"
 tokio = { version = "1", features = ["full"] }
-
 uuid = { version = "1.0", features = ["v4"] }
-
 lazy_static = "1.4"
 env_logger = { version = "0.10" }
 log = { version = "0.4" }
-
 scylla = "0.8"

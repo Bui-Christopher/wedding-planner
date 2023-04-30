@@ -2,8 +2,8 @@ use proto::{
     methods::{goals_server::Goals, *},
     objects::Goal,
 };
-use tonic::{Request, Response, Status};
 use scylla::transport::session::Session;
+use tonic::{Request, Response, Status};
 
 use crate::database;
 
@@ -13,12 +13,12 @@ pub struct GoalService {
 
 impl GoalService {
     pub(super) fn new(db_session: Session) -> Self {
-        Self {db_session}
+        Self { db_session }
     }
 }
 
 pub fn init_goal_server(db_session: Session) -> goals_server::GoalsServer<GoalService> {
-    goals_server::GoalsServer::new(GoalService::new(db_session)) 
+    goals_server::GoalsServer::new(GoalService::new(db_session))
 }
 
 #[tonic::async_trait]
@@ -52,7 +52,7 @@ impl Goals for GoalService {
         req: Request<ReadMultiGoalsRequest>,
     ) -> Result<Response<ReadMultiGoalsResponse>, Status> {
         let ReadMultiGoalsRequest {} = req.into_inner();
-        
+
         let goals = database::read_multi_goals(&self.db_session).await?;
         let resp = ReadMultiGoalsResponse { goals };
         Ok(Response::new(resp))

@@ -31,6 +31,7 @@ pub async fn initalize_tables(session: &Session) -> Result<(), Box<dyn error::Er
         .await?;
     Ok(())
 }
+
 #[derive(Debug, scylla::FromRow, scylla::ValueList)]
 pub struct GoalDB {
     pub id: Uuid,
@@ -66,6 +67,7 @@ impl From<Goal> for GoalDB {
         }
     }
 }
+
 pub async fn insert_goal(session: &Session, goal: Goal) -> Result<(), Status> {
     let goal_db: GoalDB = Into::<GoalDB>::into(goal);
     let resp = session
@@ -80,6 +82,7 @@ pub async fn insert_goal(session: &Session, goal: Goal) -> Result<(), Status> {
         Err(e) => Err(Status::internal(e.to_string())),
     }
 }
+
 pub async fn read_goal(session: &Session, id: String) -> Result<Goal, Status> {
     let resp = session
         .query(
@@ -96,6 +99,7 @@ pub async fn read_goal(session: &Session, id: String) -> Result<Goal, Status> {
         Err(e) => Err(Status::internal(format!("Failed to read from DB: {e}"))),
     }
 }
+
 pub async fn read_multi_goals(session: &Session) -> Result<Vec<Goal>, Status> {
     let resp = session
         .query(
@@ -115,9 +119,9 @@ pub async fn read_multi_goals(session: &Session) -> Result<Vec<Goal>, Status> {
                         }
                     };
                 }
-                return Ok(goals);
+                Ok(goals)
             } else {
-                return Err(Status::internal(format!("Failed to read from DB")));
+                Err(Status::internal("Failed to read from DB"))
             }
         }
         Err(e) => Err(Status::internal(format!(
@@ -192,6 +196,7 @@ pub async fn insert_guest(session: &Session, guest: Guest) -> Result<(), Status>
         Err(e) => Err(Status::internal(e.to_string())),
     }
 }
+
 pub async fn read_guest(session: &Session, id: String) -> Result<Guest, Status> {
     let resp = session
         .query(
@@ -207,6 +212,7 @@ pub async fn read_guest(session: &Session, id: String) -> Result<Guest, Status> 
         Err(e) => Err(Status::internal(format!("Failed to read from DB: {e}"))),
     }
 }
+
 pub async fn read_multi_guests(session: &Session) -> Result<Vec<Guest>, Status> {
     let resp = session
         .query(
@@ -226,9 +232,9 @@ pub async fn read_multi_guests(session: &Session) -> Result<Vec<Guest>, Status> 
                         }
                     };
                 }
-                return Ok(guests);
+                Ok(guests)
             } else {
-                return Err(Status::internal(format!("Failed to read from DB")));
+                Err(Status::internal("Failed to read from DB"))
             }
         }
         Err(e) => Err(Status::internal(format!(
@@ -236,6 +242,7 @@ pub async fn read_multi_guests(session: &Session) -> Result<Vec<Guest>, Status> 
         ))),
     }
 }
+
 pub async fn delete_guest(session: &Session, id: String) -> Result<(), Status> {
     let resp = session
         .query(
@@ -293,6 +300,7 @@ pub async fn insert_image(session: &Session, image: Image) -> Result<(), Status>
         Err(e) => Err(Status::internal(e.to_string())),
     }
 }
+
 pub async fn read_image(session: &Session, id: String) -> Result<Image, Status> {
     let resp = session
         .query(
@@ -309,6 +317,7 @@ pub async fn read_image(session: &Session, id: String) -> Result<Image, Status> 
         Err(e) => Err(Status::internal(format!("Failed to read from DB: {e}"))),
     }
 }
+
 pub async fn delete_image(session: &Session, id: String) -> Result<(), Status> {
     let resp = session
         .query(
