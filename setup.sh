@@ -8,9 +8,13 @@ mv target/x86_64-unknown-linux-musl/release/grpc-db .tmp/grpc-db
 docker build \
     -t cbui125/http-api:$(git describe) \
     -f http-api/Dockerfile .tmp/ 
-docker push cbui125/http-api:$(git describe)
-
+# docker push cbui125/http-api:$(git describe)
+#
 docker build \
     -t cbui125/grpc-db:$(git describe) \
     -f grpc-db/Dockerfile .tmp/ 
-docker push cbui125/grpc-db:$(git describe)
+# docker push cbui125/grpc-db:$(git describe)
+
+cd nginx/
+docker build \
+    -t cbui125/nginx:$(git describe) . 
